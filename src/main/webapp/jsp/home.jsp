@@ -5,10 +5,6 @@
 </head>
 <body>
 <h1>Under Construction!!!</h1>
-<table>
-<c:forEach var="entity" items="${test}">
-<tr><td>${entity.id }</td><td>${entity.text }</td></tr>
-</c:forEach>
-</table>
+<p>Hello world!</p>
 </body>
 </html>
