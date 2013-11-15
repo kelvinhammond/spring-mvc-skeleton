@@ -28,6 +28,7 @@ public class UserEntity {
     private String firstname;
     private String lastname;
     private Date lastlogin;
+    private Date currentlogin;
     private Set<RoleEntity> roles = new HashSet<RoleEntity>(0);
 
     @Column
@@ -100,5 +101,13 @@ public class UserEntity {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Date getCurrentlogin() {
+        return currentlogin;
+    }
+
+    public void setCurrentlogin(Date currentlogin) {
+        this.currentlogin = currentlogin;
     }
 }

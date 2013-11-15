@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setFirstname(userBean.getFirstname());
         userEntity.setLastname(userBean.getLastname());
         userEntity.setLastlogin(userBean.getLastlogin());
+        userEntity.setCurrentlogin(userBean.getCurrentlogin());
 
         // create a last login if null
         if (userBean.getLastlogin() == null) {
@@ -80,6 +81,7 @@ public class UserServiceImpl implements UserService {
         userBean.setFirstname(userEntity.getFirstname());
         userBean.setLastname(userEntity.getLastname());
         userBean.setLastlogin(userEntity.getLastlogin());
+        userBean.setCurrentlogin(userEntity.getCurrentlogin());
 
         Set<RoleBean> roles = new HashSet<RoleBean>(0);
         for (RoleEntity roleEntity : userEntity.getRoles()) {
@@ -126,7 +128,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateLastLoginDate(String username) {
         UserEntity user = this.userDao.getUser(username);
-        user.setLastlogin(new Date());
+        user.setLastlogin(user.getCurrentlogin());
+        user.setCurrentlogin(new Date());
     }
 
 }

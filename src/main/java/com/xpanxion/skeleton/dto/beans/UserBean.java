@@ -15,6 +15,8 @@ public class UserBean {
 
     private Date lastlogin;
 
+    private Date currentlogin;
+
     private String password;
 
     private Set<RoleBean> roles;
@@ -73,5 +75,13 @@ public class UserBean {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Date getCurrentlogin() {
+        return currentlogin;
+    }
+
+    public void setCurrentlogin(Date currentlogin) {
+        this.currentlogin = currentlogin;
     }
 }
