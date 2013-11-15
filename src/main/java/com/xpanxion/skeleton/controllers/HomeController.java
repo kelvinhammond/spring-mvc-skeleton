@@ -43,6 +43,8 @@ public class HomeController {
             user = new UserBean();
             user.setUsername("test");
             user.setPassword("test");
+            user.setFirstname("Test");
+            user.setLastname("Tester");
 
             RoleBean role = new RoleBean();
             role.setName("user");
