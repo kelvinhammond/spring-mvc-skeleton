@@ -2,7 +2,9 @@ package com.xpanxion.skeleton.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -12,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xpanxion.skeleton.dao.UserDao;
+import com.xpanxion.skeleton.dto.beans.RoleBean;
 import com.xpanxion.skeleton.dto.beans.UserBean;
+import com.xpanxion.skeleton.dto.entity.RoleEntity;
 import com.xpanxion.skeleton.dto.entity.UserEntity;
 
 @Transactional
@@ -20,6 +24,25 @@ import com.xpanxion.skeleton.dto.entity.UserEntity;
 public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
+
+    @Override
+    public void addUser(UserBean userBean) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(userBean.getId());
+        userEntity.setUsername(userBean.getUsername());
+        userEntity.setPassword(userBean.getPassword());
+
+        Set<RoleEntity> roles = new HashSet<RoleEntity>(0);
+        for (RoleBean roleBean : userBean.getRoles()) {
+            RoleEntity roleEntity = new RoleEntity();
+            roleEntity.setId(roleBean.getId());
+            roleEntity.setName(roleBean.getName());
+            roles.add(roleEntity);
+        }
+        userEntity.setRoles(roles);
+
+        this.userDao.addUser(userEntity);
+    }
 
     @Override
     public boolean authenticateUser(String username, String password) {
@@ -40,7 +63,19 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = this.userDao.getUser(username);
         if (userEntity != null) {
             UserBean userBean = new UserBean();
-            BeanUtils.copyProperties(userEntity, userBean);
+            userBean.setId(userEntity.getId());
+            userBean.setUsername(userEntity.getUsername());
+            userBean.setPassword(userEntity.getPassword());
+
+            Set<RoleBean> roles = new HashSet<RoleBean>(0);
+            for (RoleEntity roleEntity : userEntity.getRoles()) {
+                RoleBean roleBean = new RoleBean();
+                roleBean.setId(roleEntity.getId());
+                roleBean.setName(roleEntity.getName());
+                roles.add(roleBean);
+            }
+            userBean.setRoles(roles);
+
             return userBean;
         }
         return null;
@@ -54,7 +89,6 @@ public class UserServiceImpl implements UserService {
             UserBean bean = new UserBean();
             BeanUtils.copyProperties(entity, bean);
             output.add(bean);
-
         }
         return output;
     }

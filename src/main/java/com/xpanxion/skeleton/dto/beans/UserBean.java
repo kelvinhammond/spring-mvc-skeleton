@@ -1,5 +1,7 @@
 package com.xpanxion.skeleton.dto.beans;
 
+import java.util.Set;
+
 public class UserBean {
 
     private long id;
@@ -8,12 +10,18 @@ public class UserBean {
 
     private String password;
 
+    private Set<RoleBean> roles;
+
     public long getId() {
         return this.id;
     }
 
     public String getPassword() {
         return this.password;
+    }
+
+    public Set<RoleBean> getRoles() {
+        return this.roles;
     }
 
     public String getUsername() {
@@ -26,6 +34,10 @@ public class UserBean {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setRoles(Set<RoleBean> roles) {
+        this.roles = roles;
     }
 
     public void setUsername(String username) {

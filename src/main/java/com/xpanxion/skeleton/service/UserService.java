@@ -7,6 +7,8 @@ import com.xpanxion.skeleton.dto.beans.UserBean;
 
 public interface UserService {
 
+    void addUser(UserBean userBean);
+
     boolean authenticateUser(String username, String password);
 
     UserBean getUser(String username);

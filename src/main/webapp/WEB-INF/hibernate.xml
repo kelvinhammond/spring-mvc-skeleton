@@ -16,11 +16,14 @@
  <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
    <property name="dataSource" ref="dataSource"/>
    <property name="packagesToScan" value="com.xpanxion.skeleton.dto.entity"/>
-       <property name="hibernateProperties">
-      <value>
-        hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-      </value>
-    </property>
+	<property name="hibernateProperties">
+		<props>
+			<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+			<prop key="hibernate.connection.charSet">UTF-8</prop>
+			<prop key="hibernate.hbm2ddl.auto">update</prop> 
+		</props>
+	</property>
  </bean>
 
 </beans>
