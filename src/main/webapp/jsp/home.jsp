@@ -2,10 +2,17 @@
 <html>
 <head>
 	<title>Home Page</title>
+	
+	<!-- JQuery -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	
     <!-- Bootstrap core CSS -->
     <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">-->
     <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/spacelab/bootstrap.min.css" rel="stylesheet">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+    
+    <!-- MomentJS -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -34,6 +41,14 @@
 	        /*-webkit-font-smoothing:antialiased;*/
 	    }
 	</style>
+	
+	<script type="text/javascript">
+	$(function() {
+		$("#lastlogin_timeago").text(
+			moment(${lastlogin}).fromNow(true)
+		);
+	});
+	</script>
 </head>
 <body>
 	<div class="container">
@@ -45,7 +60,7 @@
 		            </a>
 		            <div class="media-body">
 		                <h4 class="media-heading">Hello, ${firstname} ${lastname}<small> USA</small></h4>
-		                <h5>it has been TIME since you last logged in.</h5>
+		                <h5>it has been <span id="lastlogin_timeago">a while</span> since you last logged in.</h5>
 		                <hr style="margin:8px auto">
 		
 		                <span class="label label-default">HTML5/CSS3</span>

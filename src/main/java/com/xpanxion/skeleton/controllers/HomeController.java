@@ -33,6 +33,7 @@ public class HomeController {
         UserBean user = this.userService.getUser(principal.getName());
         mAndV.addObject("firstname", user.getFirstname());
         mAndV.addObject("lastname", user.getLastname());
+        mAndV.addObject("lastlogin", user.getLastlogin().getTime());
         return mAndV;
     }
 
