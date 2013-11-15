@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.xpanxion.skeleton.controllers.HomeController;
 import com.xpanxion.skeleton.service.TestService;
 
 /**

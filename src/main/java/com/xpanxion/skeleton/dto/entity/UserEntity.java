@@ -1,5 +1,6 @@
 package com.xpanxion.skeleton.dto.entity;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +25,15 @@ public class UserEntity {
     private long id;
     private String username;
     private String password;
+    private String firstname;
+    private String lastname;
+    private Date lastlogin;
     private Set<RoleEntity> roles = new HashSet<RoleEntity>(0);
+
+    @Column
+    public String getFirstname() {
+        return this.firstname;
+    }
 
     /**
      * @return the id
@@ -33,6 +42,16 @@ public class UserEntity {
     @GeneratedValue
     public long getId() {
         return this.id;
+    }
+
+    @Column
+    public Date getLastlogin() {
+        return this.lastlogin;
+    }
+
+    @Column
+    public String getLastname() {
+        return this.lastname;
     }
 
     @Column
@@ -51,12 +70,24 @@ public class UserEntity {
         return this.username;
     }
 
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
     /**
      * @param id
      *            the id to set
      */
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setLastlogin(Date lastlogin) {
+        this.lastlogin = lastlogin;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public void setPassword(String password) {

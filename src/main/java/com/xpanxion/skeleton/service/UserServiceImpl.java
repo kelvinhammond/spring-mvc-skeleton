@@ -2,6 +2,7 @@ package com.xpanxion.skeleton.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,7 +10,6 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +31,14 @@ public class UserServiceImpl implements UserService {
         userEntity.setId(userBean.getId());
         userEntity.setUsername(userBean.getUsername());
         userEntity.setPassword(userBean.getPassword());
+        userEntity.setFirstname(userBean.getFirstname());
+        userEntity.setLastname(userBean.getLastname());
+        userEntity.setLastlogin(userBean.getLastlogin());
+
+        // create a last login if null
+        if (userBean.getLastlogin() == null) {
+            userEntity.setLastlogin(new Date());
+        }
 
         Set<RoleEntity> roles = new HashSet<RoleEntity>(0);
         for (RoleBean roleBean : userBean.getRoles()) {
@@ -58,25 +66,38 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    /**
+     * Copy properties from UserEntity into a new UserBean
+     * 
+     * @param userEntity
+     * @return UserBean
+     */
+    public UserBean entityToBean(UserEntity userEntity) {
+        UserBean userBean = new UserBean();
+        userBean.setId(userEntity.getId());
+        userBean.setUsername(userEntity.getUsername());
+        userBean.setPassword(userEntity.getPassword());
+        userBean.setFirstname(userEntity.getFirstname());
+        userBean.setLastname(userEntity.getLastname());
+        userBean.setLastlogin(userEntity.getLastlogin());
+
+        Set<RoleBean> roles = new HashSet<RoleBean>(0);
+        for (RoleEntity roleEntity : userEntity.getRoles()) {
+            RoleBean roleBean = new RoleBean();
+            roleBean.setId(roleEntity.getId());
+            roleBean.setName(roleEntity.getName());
+            roles.add(roleBean);
+        }
+        userBean.setRoles(roles);
+
+        return userBean;
+    }
+
     @Override
     public UserBean getUser(String username) {
         UserEntity userEntity = this.userDao.getUser(username);
         if (userEntity != null) {
-            UserBean userBean = new UserBean();
-            userBean.setId(userEntity.getId());
-            userBean.setUsername(userEntity.getUsername());
-            userBean.setPassword(userEntity.getPassword());
-
-            Set<RoleBean> roles = new HashSet<RoleBean>(0);
-            for (RoleEntity roleEntity : userEntity.getRoles()) {
-                RoleBean roleBean = new RoleBean();
-                roleBean.setId(roleEntity.getId());
-                roleBean.setName(roleEntity.getName());
-                roles.add(roleBean);
-            }
-            userBean.setRoles(roles);
-
-            return userBean;
+            return this.entityToBean(userEntity);
         }
         return null;
     }
@@ -86,9 +107,7 @@ public class UserServiceImpl implements UserService {
         List<UserEntity> users = this.userDao.getAllUsers();
         List<UserBean> output = new ArrayList<UserBean>();
         for (UserEntity entity : users) {
-            UserBean bean = new UserBean();
-            BeanUtils.copyProperties(entity, bean);
-            output.add(bean);
+            output.add(this.entityToBean(entity));
         }
         return output;
     }
@@ -102,6 +121,12 @@ public class UserServiceImpl implements UserService {
     @Resource
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    @Override
+    public void updateLastLoginDate(String username) {
+        UserEntity user = this.userDao.getUser(username);
+        user.setLastlogin(new Date());
     }
 
 }

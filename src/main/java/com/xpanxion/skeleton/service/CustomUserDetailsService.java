@@ -7,6 +7,8 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.springframework.context.ApplicationListener;
+import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -21,7 +23,7 @@ import com.xpanxion.skeleton.dto.beans.UserBean;
 
 @Service
 @Transactional(readOnly = true)
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService, ApplicationListener<AuthenticationSuccessEvent> {
 
     private UserService userService;
 
@@ -43,6 +45,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         boolean accountNonLocked = true;
 
         return new User(user.getUsername(), user.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, this.getAuthorities(user.getRoles()));
+    }
+
+    @Override
+    public void onApplicationEvent(AuthenticationSuccessEvent event) {
+        String username = ((UserDetails) event.getAuthentication().getPrincipal()).getUsername();
+        this.userService.updateLastLoginDate(username);
     }
 
     @Resource

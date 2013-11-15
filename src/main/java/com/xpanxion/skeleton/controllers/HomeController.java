@@ -31,9 +31,8 @@ public class HomeController {
     public ModelAndView getHomePage(Principal principal) {
         ModelAndView mAndV = new ModelAndView("home");
         UserBean user = this.userService.getUser(principal.getName());
-        if (user != null) {
-            mAndV.addObject("user", user);
-        }
+        mAndV.addObject("firstname", user.getFirstname());
+        mAndV.addObject("lastname", user.getLastname());
         return mAndV;
     }
 

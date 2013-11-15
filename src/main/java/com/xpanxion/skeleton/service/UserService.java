@@ -16,4 +16,6 @@ public interface UserService {
     List<UserBean> getUsers();
 
     String hashPassword(String password) throws UnsupportedEncodingException;
+
+    void updateLastLoginDate(String username);
 }
